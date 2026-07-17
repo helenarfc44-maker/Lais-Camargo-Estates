@@ -88,7 +88,7 @@ export function DetailPage({ p, onBack, onOpen }: DetailPageProps) {
   const slugImovel = `/imoveis/${slugify(p.tipo + " com " + p.areaUtil + "-0 m2 a venda no bairro " + p.bairro)}-${p.codigo}`;
 
   return (
-    <div className="pt-20 min-h-screen bg-white">
+    <div className="pt-28 min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Back navigation & breadcrumb */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">

@@ -85,7 +85,7 @@ export function SearchPage({ filtros, setFiltros, onOpen }: SearchPageProps) {
   );
 
   return (
-    <div className="pt-20 min-h-screen bg-white">
+    <div className="pt-28 min-h-screen bg-white">
       <div className="max-w-7xl mx-auto px-5 py-12">
         <h1 className="text-3xl md:text-4xl mb-2 font-serif text-texto-escuro font-medium">Buscar Imóveis</h1>
         <p className="text-gray-500 text-sm mb-10 font-sans font-light">

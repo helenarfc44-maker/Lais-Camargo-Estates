@@ -13,11 +13,18 @@ export function Footer({ onNav }: FooterProps) {
     <footer className="text-white bg-verde-profundo">
       <div className="max-w-7xl mx-auto px-5 py-16 grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
         {/* Branding Col */}
-        <div className="space-y-4">
-          <LaisLogo className="h-11 w-auto mb-5 text-white" />
-          <p className="text-sm leading-relaxed opacity-80 font-sans font-light" style={{ maxWidth: "300px" }}>
-            Imóveis de alto padrão e curadoria imobiliária premium nas regiões mais nobres de São Paulo.
-          </p>
+        <div className="flex flex-col items-start text-left space-y-4">
+          <div className="w-40 md:w-48 mb-2 -ml-2">
+            <LaisLogo className="w-full h-auto text-white" />
+          </div>
+          <div className="flex flex-col items-start text-left">
+            <p className="text-sm leading-relaxed opacity-80 font-sans font-light" style={{ maxWidth: "300px" }}>
+              Imóveis de alto padrão e curadoria imobiliária premium nas regiões mais nobres de São Paulo.
+            </p>
+            <p className="text-xs opacity-60 font-sans font-light mt-3" style={{ maxWidth: "300px" }}>
+              CRECI: 76056
+            </p>
+          </div>
         </div>
 
         {/* Contact Links Col */}
@@ -41,7 +48,7 @@ export function Footer({ onNav }: FooterProps) {
               <span>{EMAIL}</span>
             </a>
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/laiscamargoimoveis"
               target="_blank"
               rel="noreferrer"
               className="flex items-center gap-3 opacity-90 hover:opacity-100 transition-opacity text-sm font-sans font-light py-1"

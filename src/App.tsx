@@ -70,10 +70,10 @@ export default function App() {
   return (
     <div className="bg-white min-h-screen text-texto-escuro font-sans antialiased selection:bg-verde/30">
       {/* Universal Sticky Header */}
-      <Header onNav={onNav} />
+      <Header onNav={onNav} currentPage={page} />
 
       {/* Main Pages */}
-      <main className="min-h-[calc(100vh-80px)]">
+      <main className="min-h-[calc(100vh-112px)]">
         {page === "home" && (
           <Home onNav={onNav} goSearchTipo={goSearchTipo} onOpen={onOpen} />
         )}

@@ -65,20 +65,23 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
     }
   };
 
-  const categoria = (label: string, tipos: string[], tone: number, img: string) => (
+  const categoria = (label: string, tipos: string[], img: string) => (
     <button
       onClick={() => goSearchTipo(tipos)}
-      className="group relative overflow-hidden aspect-[3/4] md:aspect-[4/5] w-full text-left cursor-pointer focus:outline-none"
+      className="group relative overflow-hidden h-[500px] md:h-[650px] w-full flex flex-col items-center justify-center cursor-pointer focus:outline-none"
     >
-      <Foto tone={tone} src={img} zoom className="absolute inset-0" />
-      <div className="absolute inset-0 bg-black/35 group-hover:bg-black/20 transition-all duration-300" />
-      <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-        <h3 className="text-white text-2xl mb-2 font-serif font-medium tracking-wide">{label}</h3>
-        <span
-          className="text-white text-xs tracking-[0.25em] uppercase border-b border-white/40 pb-1 opacity-80 group-hover:opacity-100 transition-opacity font-sans font-light"
-        >
+      <img 
+        src={img} 
+        alt={label} 
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-500" />
+      <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center transform group-hover:-translate-y-2 transition-transform duration-500">
+        <h3 className="text-white text-3xl md:text-4xl lg:text-5xl mb-6 font-serif font-medium tracking-wide">{label}</h3>
+        <div className="border border-white/80 text-white px-8 py-3 text-sm tracking-[0.2em] uppercase font-sans font-light opacity-0 group-hover:opacity-100 transition-opacity duration-500">
           Ver imóveis
-        </span>
+        </div>
       </div>
     </button>
   );
@@ -86,37 +89,43 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
   return (
     <>
       {/* HERO SECTION */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <Foto
-          tone={0}
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <img
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-          className="absolute inset-0 w-full h-full"
+          alt="Imóvel de Luxo Lais Camargo"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-texto-escuro/60" />
-        <div className="relative z-10 text-center px-6 flex flex-col items-center max-w-4xl">
-          <LaisLogo className="w-56 sm:w-72 md:w-96 mb-8 animate-fadeIn text-white" />
-          <p
-            className="text-white text-xs sm:text-sm md:text-base tracking-[0.3em] uppercase mb-12 opacity-90 font-sans font-light"
-          >
+        <div className="absolute inset-0 bg-texto-escuro/70" />
+        
+        <div className="relative z-10 text-center px-6 flex flex-col items-center max-w-4xl mt-16">
+          <h1 className="text-white font-serif text-4xl md:text-6xl lg:text-7xl leading-tight tracking-widest mb-4">
+            <span className="block">LAIS CAMARGO</span>
+            <span className="block text-xs md:text-sm tracking-[0.5em] font-sans font-light uppercase mt-2">
+              Estates
+            </span>
+          </h1>
+          <p className="text-white/90 text-[10px] md:text-sm tracking-[0.3em] font-sans font-light uppercase mb-8 max-w-2xl text-center">
             Curadoria de imóveis de altíssimo padrão em São Paulo
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
+          
+          <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto px-4 mt-2">
             <button
               onClick={() => onNav("search")}
-              className="btn-verde w-full sm:w-auto px-10 py-4.5 text-[11px] tracking-[0.25em] uppercase font-sans font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
+              className="border border-white hover:bg-white hover:text-black text-white w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-medium transition-colors duration-300 backdrop-blur-sm bg-black/10"
             >
-              Ver Portfólio
+              Ver Imóveis
             </button>
             <button
               onClick={() => onNav("home", "#contato")}
-              className="btn-outline-branco w-full sm:w-auto px-10 py-4.5 text-[11px] tracking-[0.25em] uppercase font-sans font-medium hover:scale-[1.02] active:scale-[0.98] transition-all duration-150"
+              className="border border-white hover:bg-white hover:text-black text-white w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-medium transition-colors duration-300 backdrop-blur-sm bg-black/10"
             >
-              Falar com equipe
+              Contato
             </button>
           </div>
         </div>
+        
         {/* Subtle Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/50 text-[10px] tracking-widest uppercase font-sans font-light animate-bounce hidden sm:block">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/80 text-[10px] tracking-widest uppercase font-sans font-light animate-bounce hidden sm:block">
           Role para ver mais
         </div>
       </section>
@@ -145,11 +154,11 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
       </section>
 
       {/* CATEGORIES SECTIONS */}
-      <section className="max-w-7xl mx-auto px-5 pb-20 md:pb-28">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {categoria("Casas Luxuosas", ["Casa", "Casa de condomínio"], 5, "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=900&q=80")}
-          {categoria("Apartamentos Premium", ["Apartamento"], 2, "https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=80")}
-          {categoria("Coberturas Exclusivas", ["Cobertura"], 7, "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=900&q=80")}
+      <section className="w-full pb-0 md:pb-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 w-full">
+          {categoria("Casas", ["Casa", "Casa de condomínio"], "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80")}
+          {categoria("Apartamentos", ["Apartamento"], "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80")}
+          {categoria("Coberturas", ["Cobertura"], "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80")}
         </div>
       </section>
 
