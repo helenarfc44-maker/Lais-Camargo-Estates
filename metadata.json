@@ -1,0 +1,6 @@
+{
+  "name": "Lais Camargo Estates",
+  "description": "Site imobiliário de alto padrão para a corretora Lais Camargo Estates em São Paulo, com busca avançada de imóveis, galeria de fotos e formulário de contato integrado.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
