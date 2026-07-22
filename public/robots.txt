@@ -1,0 +1,16 @@
+# Lais Camargo Estates — robots.txt
+# https://www.laiscamargoestates.com.br
+
+# Permitir rastreamento geral
+User-agent: *
+Allow: /
+
+# Bloquear rotas de API e arquivos internos
+Disallow: /api/
+Disallow: /_next/
+Disallow: /node_modules/
+Disallow: /.git/
+Disallow: /src/
+
+# Sitemap
+Sitemap: https://www.laiscamargoestates.com.br/sitemap.xml
