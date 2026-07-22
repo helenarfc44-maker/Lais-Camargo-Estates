@@ -14,19 +14,20 @@ const TONES = [
 interface FotoProps {
   tone: number;
   src?: string;
+  alt?: string;
   zoom?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
 
-export function Foto({ tone, src, zoom, className = "", children }: FotoProps) {
+export function Foto({ tone, src, alt = "", zoom, className = "", children }: FotoProps) {
   const [err, setErr] = useState(false);
   return (
     <div className={"relative overflow-hidden " + className} style={{ background: TONES[tone % TONES.length] }}>
       {src && !err ? (
         <img
           src={src}
-          alt=""
+          alt={alt}
           loading="lazy"
           referrerPolicy="no-referrer"
           onError={() => setErr(true)}
