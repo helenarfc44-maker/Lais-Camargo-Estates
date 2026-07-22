@@ -263,11 +263,12 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             </a>
           </div>
           <div className="w-full">
-            <Foto
-              tone={4}
-              src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=900&q=80"
-              className="aspect-[4/5] w-full rounded-sm shadow-lg"
-            >
+           <Foto
+  tone={4}
+  src="/lais-camargo.jpg"
+  alt="Lais Camargo, corretora especializada em imóveis de alto padrão em São Paulo"
+  className="aspect-[4/5] w-full rounded-sm shadow-lg object-cover"
+>
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 text-white text-xs tracking-[0.3em] uppercase font-sans font-medium">
                 Lais Camargo
