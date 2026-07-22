@@ -160,7 +160,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
           {/* H1 Principal com SEO Otimizado */}
 <h1 className="text-white font-serif text-4xl md:text-6xl lg:text-8xl leading-tight tracking-widest mb-2">
   <span className="block">LAIS CAMARGO</span>
-  <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-4 drop-shadow-md">
+  <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-2 drop-shadow-md">
     ESTATES
   </span>
 </h1>
@@ -189,7 +189,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             {/* Botão Outline */}
             <button
               onClick={() => onNav("home", "#contato")}
-              className="border border-white hover:bg-white hover:text-black text-white w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-medium transition-colors duration-300 backdrop-blur-sm bg-black/20"
+              className="border border-white hover:bg-white hover:text-black text-white w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-medium transition-colors duration-300 bg-black/30"
             >
               Contato
             </button>
