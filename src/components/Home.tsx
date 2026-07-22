@@ -158,20 +158,23 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
         
         <div className="relative z-10 text-center px-6 flex flex-col items-center max-w-4xl mt-12">
           {/* H1 Principal com SEO Otimizado */}
-          <h1 className="text-white font-serif text-4xl md:text-6xl lg:text-7xl leading-tight tracking-widest mb-2">
+<h1 className="text-white font-serif text-4xl md:text-6xl lg:text-8xl leading-tight tracking-widest mb-2">
   <span className="block">LAIS CAMARGO</span>
-  <span className="block text-xs md:text-sm tracking-[0.5em] font-sans font-normal uppercase mt-2 drop-shadow-md">
+  <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-4 drop-shadow-md">
     ESTATES
   </span>
 </h1>
 
-           {/* Subtítulos */}
-          <p className="text-white/90 text-xs md:text-sm tracking-[0.3em] font-sans font-medium uppercase mt-2 max-w-2xl text-center drop-shadows-md">
-            Curadoria de imóveis de altíssimo padrão em São Paulo
-          </p>
-          <p className="text-white/90 text-[10px] md:text-xs tracking-[0.4em] font-sans font-medium uppercase mt-3 mb-8 drop-shadow-md">
-            Mais de 25 anos de expertise
-          </p>
+{/* Filete separador */}
+<div className="w-[190px] h-px bg-white/40 my-6" />
+
+{/* Subtítulos */}
+<p className="text-white text-xs md:text-sm tracking-[0.3em] font-sans font-medium uppercase max-w-2xl text-center drop-shadow-md">
+  Curadoria de imóveis de altíssimo padrão em São Paulo
+</p>
+<p className="text-white text-[10px] md:text-xs tracking-[0.4em] font-sans font-medium uppercase mt-2 mb-8 drop-shadow-md">
+  Mais de 25 anos de expertise
+</p>
           
           {/* Botões de Ação */}
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
