@@ -158,7 +158,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
         
         <div className="relative z-10 text-center px-6 flex flex-col items-center max-w-4xl mt-12">
           {/* H1 Principal com SEO Otimizado */}
-<h1 className="text-white font-serif text-4xl md:text-6xl lg:text-8xl leading-tight tracking-widest mb-2">
+<h1 className="text-white font-serif text-4xl md:text-6xl lg:text-7xl leading-tight tracking-widest mb-2">
   <span className="block">LAIS CAMARGO</span>
   <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-2 drop-shadow-md">
     ESTATES
