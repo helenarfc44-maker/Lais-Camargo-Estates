@@ -65,14 +65,14 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
     }
   };
 
-  const categoria = (label: string, tipos: string[], img: string) => (
+  const categoria = (label: string, tipos: string[], img: string, alt: string) => (
     <button
       onClick={() => goSearchTipo(tipos)}
       className="group relative overflow-hidden h-[500px] md:h-[650px] w-full flex flex-col items-center justify-center cursor-pointer focus:outline-none"
     >
       <img 
         src={img} 
-        alt={label} 
+        alt={alt} 
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         loading="lazy"
       />
@@ -151,30 +151,27 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <img
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80"
-          alt="Imóvel de Luxo Lais Camargo Estates"
+          alt="Casa contemporânea de alto padrão em São Paulo ao entardecer"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/40 to-black/20" />
         
         <div className="relative z-10 text-center px-6 flex flex-col items-center max-w-4xl mt-12">
           {/* H1 Principal com SEO Otimizado */}
-<h1 className="text-white font-serif text-4xl md:text-6xl lg:text-7xl leading-tight tracking-widest mb-2">
-  <span className="block">LAIS CAMARGO</span>
-  <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-2 drop-shadow-md">
-    ESTATES
-  </span>
-</h1>
+          <h1 className="text-white font-serif text-4xl md:text-6xl lg:text-7xl leading-tight tracking-widest flex flex-col items-center">
+            <span className="block">LAIS CAMARGO</span>
+            <span className="block text-sm md:text-base tracking-[0.85em] pl-[0.85em] font-sans font-normal uppercase mt-2 drop-shadow-md">
+              ESTATES
+            </span>
+            <span aria-hidden="true" className="block w-[190px] h-px bg-white/40 my-6" />
+            <span className="block text-xs md:text-sm tracking-[0.3em] font-sans font-medium uppercase max-w-2xl text-center leading-relaxed drop-shadow-md">
+              Curadoria de imóveis de altíssimo padrão em São Paulo
+            </span>
+          </h1>
 
-{/* Filete separador */}
-<div className="w-[190px] h-px bg-white/40 my-6" />
-
-{/* Subtítulos */}
-<p className="text-white text-xs md:text-sm tracking-[0.3em] font-sans font-medium uppercase max-w-2xl text-center drop-shadow-md">
-  Curadoria de imóveis de altíssimo padrão em São Paulo
-</p>
-<p className="text-white text-[10px] md:text-xs tracking-[0.4em] font-sans font-medium uppercase mt-2 mb-8 drop-shadow-md">
-  Mais de 25 anos de expertise
-</p>
+          <p className="text-white text-[10px] md:text-xs tracking-[0.4em] font-sans font-medium uppercase mt-2 mb-8 drop-shadow-md">
+            Mais de 25 anos de expertise
+          </p>
           
           {/* Botões de Ação */}
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
@@ -209,7 +206,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
           Seleção criteriosa
         </p>
         <h2 className="text-center text-3xl md:text-4xl mb-16 font-serif text-texto-escuro font-medium">
-          Imóveis em Destaque
+          Imóveis de alto padrão em destaque
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {destaques.map((p) => (
@@ -228,10 +225,26 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
 
       {/* CATEGORIES SECTIONS */}
       <section className="w-full pb-0 md:pb-0">
+        <h2 className="sr-only">Tipos de imóvel no portfólio</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 w-full">
-          {categoria("Casas", ["Casa", "Casa de condomínio"], "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80")}
-          {categoria("Apartamentos", ["Apartamento"], "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80")}
-          {categoria("Coberturas", ["Cobertura"], "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80")}
+          {categoria(
+            "Casas",
+            ["Casa", "Casa de condomínio"],
+            "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80",
+            "Casa de alto padrão em condomínio fechado em São Paulo"
+          )}
+          {categoria(
+            "Apartamentos",
+            ["Apartamento"],
+            "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80",
+            "Apartamento de alto padrão em São Paulo"
+          )}
+          {categoria(
+            "Coberturas",
+            ["Cobertura"],
+            "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80",
+            "Cobertura de luxo com vista em São Paulo"
+          )}
         </div>
       </section>
 
@@ -243,7 +256,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
               Quem Somos
             </p>
             <h2 className="text-3xl md:text-4xl mb-8 font-serif font-medium tracking-wide">
-              Lais Camargo
+              Lais Camargo, especialista em imóveis de alto padrão
             </h2>
             <div className="space-y-5 leading-relaxed text-sm sm:text-base opacity-90 font-sans font-light">
               <p>
@@ -266,12 +279,12 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             </a>
           </div>
           <div className="w-full">
-           <Foto
-  tone={4}
-  src="/lais-camargo.jpg"
-  alt="Lais Camargo, corretora especializada em imóveis de alto padrão em São Paulo"
-  className="aspect-[4/5] w-full rounded-sm shadow-lg object-cover"
->
+            <Foto
+              tone={4}
+              src="/lais-camargo.jpg"
+              alt="Lais Camargo, corretora especializada em imóveis de alto padrão em São Paulo"
+              className="aspect-[4/5] w-full rounded-sm shadow-lg object-cover"
+            >
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6 text-white text-xs tracking-[0.3em] uppercase font-sans font-medium">
                 Lais Camargo
