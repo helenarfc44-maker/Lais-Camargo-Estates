@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { BedDouble, Bath, Car, Ruler, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
+import { BedDouble, Bath, Car, Ruler, ArrowLeft, Loader2, AlertCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import { Imovel } from "../types";
 import { PropertyCard } from "./PropertyCard";
 import { Foto } from "./Foto";
@@ -54,6 +54,8 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
     if (fotos && fotos.length > 0) return fotos;
     return [p.img];
   }, [p]);
+
+  const miniaturas = useMemo(() => galeria.slice(1, 5), [galeria]);
 
   const similares = useMemo(() => {
     if (!p) return [];
@@ -180,27 +182,62 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
           <Foto tone={p.tone} src={galeria[fotoAtiva]} alt={altFoto} className="lg:col-span-2 aspect-[16/10] rounded-sm shadow-xs">
             {p.exclusivo && (
               <span
-                className="absolute top-4 left-4 text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 font-medium shadow-xs"
+                className="absolute top-4 left-4 z-10 text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 font-medium shadow-xs"
                 style={{ fontFamily: "'Inter', sans-serif", backgroundColor: "var(--color-verde)", color: "var(--color-texto-escuro)" }}
               >
                 Exclusivo
               </span>
             )}
-          </Foto>
-          {galeria.length > 1 && (
-            <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
-              {galeria.slice(0, 6).map((g, i) => (
+            {galeria.length > 1 && (
+              <>
                 <button
-                  key={i}
-                  onClick={() => setFotoAtiva(i)}
-                  className={
-                    "relative rounded-[2px] overflow-hidden focus:outline-none transition-all " +
-                    (fotoAtiva === i ? "ring-2 ring-verde-profundo scale-[0.98]" : "opacity-75 hover:opacity-100")
-                  }
+                  type="button"
+                  aria-label="Foto anterior"
+                  onClick={() => setFotoAtiva((i) => (i - 1 + galeria.length) % galeria.length)}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 bg-white/85 hover:bg-white text-texto-escuro w-9 h-9 rounded-full flex items-center justify-center shadow-sm transition-colors cursor-pointer"
                 >
-                  <Foto tone={p.tone + i} src={g} alt={`${altFoto} — imagem ${i + 1}`} className="aspect-[16/10] lg:aspect-[16/9] w-full" />
+                  <ChevronLeft size={18} strokeWidth={1.5} />
                 </button>
-              ))}
+                <button
+                  type="button"
+                  aria-label="Próxima foto"
+                  onClick={() => setFotoAtiva((i) => (i + 1) % galeria.length)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 bg-white/85 hover:bg-white text-texto-escuro w-9 h-9 rounded-full flex items-center justify-center shadow-sm transition-colors cursor-pointer"
+                >
+                  <ChevronRight size={18} strokeWidth={1.5} />
+                </button>
+                <span className="absolute bottom-3 right-3 z-10 bg-black/55 text-white text-[11px] tracking-wider px-2.5 py-1 rounded-[2px] font-sans">
+                  {fotoAtiva + 1} / {galeria.length}
+                </span>
+              </>
+            )}
+          </Foto>
+
+          {galeria.length > 1 && (
+            <div className="grid grid-cols-4 gap-3 lg:grid-cols-2 lg:grid-rows-2 lg:h-full">
+              {miniaturas.map((g, i) => {
+                const indice = i + 1;
+                const ultima = i === miniaturas.length - 1;
+                const restantes = galeria.length - miniaturas.length - 1;
+                return (
+                  <button
+                    key={indice}
+                    type="button"
+                    onClick={() => setFotoAtiva(ultima && restantes > 0 ? indice : indice)}
+                    className={
+                      "relative rounded-[2px] overflow-hidden focus:outline-none transition-all aspect-[16/10] lg:aspect-auto lg:h-full " +
+                      (fotoAtiva === indice ? "ring-2 ring-verde-profundo" : "opacity-85 hover:opacity-100")
+                    }
+                  >
+                    <Foto tone={p.tone + indice} src={g} alt={`${altFoto}, imagem ${indice + 1}`} className="w-full h-full" />
+                    {ultima && restantes > 0 && (
+                      <span className="absolute inset-0 bg-black/45 text-white flex items-center justify-center text-xs tracking-wider font-sans pointer-events-none">
+                        mais {restantes}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>
