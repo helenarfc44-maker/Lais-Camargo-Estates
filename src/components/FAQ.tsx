@@ -49,35 +49,38 @@ export function FAQ() {
           <p className="text-texto-escuro/60 font-sans font-light">Tudo o que você precisa saber sobre nosso trabalho</p>
         </div>
 
-        <div className="flex flex-col border-t border-texto-escuro/10">
+        <dl className="flex flex-col border-t border-texto-escuro/10">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
 
             return (
               <div key={index} className="border-b border-texto-escuro/10">
-                <button
-                  onClick={() => setOpenIndex(isOpen ? null : index)}
-                  className="w-full flex items-center justify-between py-6 text-left group"
-                >
-                  <h3 className="font-sans font-medium text-texto-escuro/90 pr-8">
-                    {faq.q}
-                  </h3>
-                  <motion.div
-                    animate={{ rotate: isOpen ? 45 : 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="flex-shrink-0 text-texto-escuro/50 group-hover:text-texto-escuro/80 transition-colors"
+                <dt>
+                  <button
+                    onClick={() => setOpenIndex(isOpen ? null : index)}
+                    className="w-full flex items-center justify-between py-6 text-left group cursor-pointer focus:outline-none"
+                    aria-expanded={isOpen}
                   >
-                    <Plus size={20} strokeWidth={1.5} />
-                  </motion.div>
-                </button>
+                    <h3 className="font-sans font-medium text-texto-escuro/90 pr-8">
+                      {faq.q}
+                    </h3>
+                    <motion.div
+                      animate={{ rotate: isOpen ? 45 : 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="flex-shrink-0 text-texto-escuro/50 group-hover:text-texto-escuro/80 transition-colors"
+                    >
+                      <Plus size={20} strokeWidth={1.5} />
+                    </motion.div>
+                  </button>
+                </dt>
                 <AnimatePresence>
                   {isOpen && (
-                    <motion.div
+                    <motion.dd
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: "auto", opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3, ease: "easeInOut" }}
-                      className="overflow-hidden"
+                      className="overflow-hidden m-0"
                     >
                       <div className="pb-6 pr-12 font-sans font-light text-texto-escuro/70 leading-relaxed text-sm md:text-base">
                         {faq.link ? (
@@ -97,13 +100,13 @@ export function FAQ() {
                           faq.a
                         )}
                       </div>
-                    </motion.div>
+                    </motion.dd>
                   )}
                 </AnimatePresence>
               </div>
             );
           })}
-        </div>
+        </dl>
       </div>
     </section>
   );
