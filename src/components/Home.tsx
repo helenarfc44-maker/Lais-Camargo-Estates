@@ -118,7 +118,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
           <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4">
             {/* Botão Sólido Branco para Destaque */}
             <button
-              onClick={() => onNav("search")}
+              onClick={() => onNav("/busca")}
               className="bg-white hover:bg-gray-100 text-gray-900 w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-semibold transition-all duration-300 shadow-lg"
             >
               Ver Imóveis
@@ -126,7 +126,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
 
             {/* Botão Outline */}
             <button
-              onClick={() => onNav("home", "#contato")}
+              onClick={() => onNav("/", "#contato")}
               className="border border-white hover:bg-white hover:text-black text-white w-full sm:w-52 py-3.5 text-[13px] tracking-[0.2em] uppercase font-sans font-medium transition-colors duration-300 bg-black/30"
             >
               Contato
@@ -135,7 +135,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
         </div>
         
         {/* Scroll Indicator com Seta */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/80 text-[10px] tracking-widest uppercase font-sans font-light animate-bounce hidden sm:flex cursor-pointer" onClick={() => onNav("home", "#destaques")}>
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center text-white/80 text-[10px] tracking-widest uppercase font-sans font-light animate-bounce hidden sm:flex cursor-pointer" onClick={() => onNav("/", "#destaques")}>
           <span className="mb-1">Role para ver mais</span>
           <ChevronDown size={16} />
         </div>
@@ -156,7 +156,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
         </div>
         <div className="text-center mt-16">
           <button
-            onClick={() => onNav("search")}
+            onClick={() => onNav("/busca")}
             className="btn-outline-verde px-10 py-4.5 text-xs tracking-[0.25em] uppercase font-sans font-medium"
           >
             Ver todos os imóveis
@@ -172,7 +172,7 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             "Casas",
             ["Casa", "Casa de condomínio"],
             "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80",
-            "Fachada contemporânea de casa de altíssimo padrão com projeto paisagístico em Alphaville."
+            "Fachada contemporânea de casa de altíssimo padrão com projeto paisagístico."
           )}
           {categoria(
             "Apartamentos",

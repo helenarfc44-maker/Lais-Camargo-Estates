@@ -24,7 +24,7 @@ export function Header({ onNav, currentPage = "home" }: HeaderProps) {
 
   const link = (label: string, id: string, action: () => void) => {
     const isActive = currentPage === id;
-    
+
     return (
       <button
         onClick={() => {
@@ -49,7 +49,7 @@ export function Header({ onNav, currentPage = "home" }: HeaderProps) {
         {/* Logo and Partner */}
         <div className="flex items-center">
           <button
-            onClick={() => onNav("home")}
+            onClick={() => onNav("/")}
             className="flex items-center focus:outline-none cursor-pointer"
           >
             <LaisLogo className="h-14 sm:h-16 w-auto text-white" />
@@ -58,11 +58,11 @@ export function Header({ onNav, currentPage = "home" }: HeaderProps) {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6 lg:gap-10">
-          {link("Home", "home", () => onNav("home"))}
-          {link("Buscar Imóveis", "search", () => onNav("search"))}
-          {link("Contato", "contato", () => onNav("home", "#contato"))}
-          {link("Quem somos", "sobre", () => onNav("home", "#sobre"))}
-          {link("FAQ", "faq", () => onNav("home", "#faq"))}
+          {link("Home", "home", () => onNav("/"))}
+          {link("Buscar Imóveis", "search", () => onNav("/busca"))}
+          {link("Contato", "contato", () => onNav("/", "#contato"))}
+          {link("Quem somos", "sobre", () => onNav("/", "#sobre"))}
+          {link("FAQ", "faq", () => onNav("/", "#faq"))}
           <a
             href="https://instagram.com/laiscamargoimoveis"
             target="_blank"
@@ -87,11 +87,11 @@ export function Header({ onNav, currentPage = "home" }: HeaderProps) {
       {/* Mobile Dropdown Menu */}
       {open && (
         <div className="md:hidden flex flex-col items-start gap-4 px-6 pb-8 pt-4 bg-verde-profundo border-t border-white/10 shadow-lg animate-fadeIn">
-          {link("Home", "home", () => onNav("home"))}
-          {link("Buscar Imóveis", "search", () => onNav("search"))}
-          {link("Contato", "contato", () => onNav("home", "#contato"))}
-          {link("Quem somos", "sobre", () => onNav("home", "#sobre"))}
-          {link("FAQ", "faq", () => onNav("home", "#faq"))}
+          {link("Home", "home", () => onNav("/"))}
+          {link("Buscar Imóveis", "search", () => onNav("/busca"))}
+          {link("Contato", "contato", () => onNav("/", "#contato"))}
+          {link("Quem somos", "sobre", () => onNav("/", "#sobre"))}
+          {link("FAQ", "faq", () => onNav("/", "#faq"))}
           <div className="flex items-center gap-4 pt-3 border-t border-white/10 w-full pl-3">
             <a
               href="https://instagram.com/laiscamargoimoveis"

@@ -1,13 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { BedDouble, Bath, Car, Ruler, MessageCircle, Mail, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
+import { useParams } from "react-router-dom";
+import { BedDouble, Bath, Car, Ruler, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 import { Imovel } from "../types";
 import { PropertyCard } from "./PropertyCard";
 import { Foto } from "./Foto";
 import data from "../data/imoveis.json";
 
 const WHATSAPP = "https://wa.me/5511991851032";
-const EMAIL = "lais@c5.com.br";
 
 interface DetailPageProps {
   onBack: () => void;
@@ -19,9 +18,8 @@ const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300
 
 export function DetailPage({ onBack, onOpen }: DetailPageProps) {
   const { slug } = useParams();
-  const navigate = useNavigate();
   const IMOVEIS: Imovel[] = data.imoveis;
-  
+
   const p = useMemo(() => {
     return IMOVEIS.find(x => {
       const xSlug = slugify(x.tipo + " com " + x.areaUtil + "-0 m2 a venda no bairro " + x.bairro) + "-" + x.codigo;
@@ -31,16 +29,14 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
 
   const [fotoAtiva, setFotoAtiva] = useState(0);
 
-  // Use effect to set title
   useEffect(() => {
     if (p) {
       document.title = `${p.tipo} no ${p.bairro} | Lais Camargo`;
     }
   }, [p]);
 
-  // Form State
   const [form, setForm] = useState({ nome: "", email: "", tel: "", msg: "" });
-  
+
   useEffect(() => {
     if (p) {
       setForm(prev => ({ ...prev, msg: `Gostaria de solicitar informações e agendar visita para o imóvel ${p.codigo} (${p.tipo} - ${p.bairro}).` }));
@@ -51,15 +47,12 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Generate sub-photos dynamically from Unsplash ID
+  // Galeria: usa o array de fotos quando existir, senão a foto principal.
   const galeria = useMemo(() => {
     if (!p) return [];
-    const baseUrl = p.img.split("?")[0];
-    return [
-      p.img,
-      `${baseUrl}?auto=format&fit=crop&w=900&q=80&sat=-15`,
-      `${baseUrl}?auto=format&fit=crop&w=900&q=80&brightness=90`
-    ];
+    const fotos = (p as any).fotos as string[] | undefined;
+    if (fotos && fotos.length > 0) return fotos;
+    return [p.img];
   }, [p]);
 
   const similares = useMemo(() => {
@@ -76,6 +69,9 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
     );
   }
 
+  const descricao = (p as any).descricao as string | undefined;
+  const temBanheiros = typeof p.banheiros === "number" && p.banheiros > 0;
+
   const zapMsg = WHATSAPP + "?text=" + encodeURIComponent(
     `Olá Lais Camargo! Tenho interesse no imóvel ${p.codigo} (${p.tipo} no bairro ${p.bairro} de ${p.areaUtil}m²). Gostaria de agendar uma visita e receber mais informações.`
   );
@@ -84,7 +80,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
     "@context": "https://schema.org",
     "@type": p.tipo === "Apartamento" || p.tipo === "Cobertura" ? "Apartment" : "SingleFamilyResidence",
     "name": `${p.tipo} no ${p.bairro} - Lais Camargo Estates`,
-    "description": `Excelente ${p.tipo.toLowerCase()} com ${p.areaUtil}m², ${p.dorms} dormitórios (${p.suites} suítes) e ${p.vagas} vagas à venda no bairro ${p.bairro}, São Paulo.`,
+    "description": `${p.tipo} com ${p.areaUtil} m² de área útil, ${p.dorms} dormitórios (${p.suites} suítes) e ${p.vagas} vagas no bairro ${p.bairro}, São Paulo.`,
     "url": `https://www.laiscamargoestates.com.br/imovel/${slug}`,
     "image": p.img,
     "address": {
@@ -94,7 +90,6 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
       "addressCountry": "BR"
     },
     "numberOfRooms": p.dorms,
-    "numberOfBathroomsTotal": p.banheiros,
     "floorSize": {
       "@type": "QuantitativeValue",
       "value": p.areaUtil,
@@ -148,8 +143,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
     }
   };
 
-  const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-  const slugImovel = `/imoveis/${slugify(p.tipo + " com " + p.areaUtil + "-0 m2 a venda no bairro " + p.bairro)}-${p.codigo}`;
+  const slugImovel = `/imovel/${slugify(p.tipo + " com " + p.areaUtil + "-0 m2 a venda no bairro " + p.bairro)}-${p.codigo}`;
 
   return (
     <div className="pt-28 min-h-screen bg-white">
@@ -164,7 +158,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
             <ArrowLeft size={14} /> Voltar para a busca
           </button>
           <span className="text-[10px] md:text-[11px] text-gray-400 font-sans font-light truncate max-w-full">
-            laiscamargo.com.br{slugImovel}
+            laiscamargoestates.com.br{slugImovel}
           </span>
         </div>
 
@@ -180,20 +174,22 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
               </span>
             )}
           </Foto>
-          <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
-            {galeria.map((g, i) => (
-              <button
-                key={i}
-                onClick={() => setFotoAtiva(i)}
-                className={
-                  "relative rounded-[2px] overflow-hidden focus:outline-none transition-all " +
-                  (fotoAtiva === i ? "ring-2 ring-verde-profundo scale-[0.98]" : "opacity-75 hover:opacity-100")
-                }
-              >
-                <Foto tone={p.tone + i} src={g} className="aspect-[16/10] lg:aspect-[16/9] w-full" />
-              </button>
-            ))}
-          </div>
+          {galeria.length > 1 && (
+            <div className="grid grid-cols-3 lg:grid-cols-1 gap-3">
+              {galeria.slice(0, 6).map((g, i) => (
+                <button
+                  key={i}
+                  onClick={() => setFotoAtiva(i)}
+                  className={
+                    "relative rounded-[2px] overflow-hidden focus:outline-none transition-all " +
+                    (fotoAtiva === i ? "ring-2 ring-verde-profundo scale-[0.98]" : "opacity-75 hover:opacity-100")
+                  }
+                >
+                  <Foto tone={p.tone + i} src={g} className="aspect-[16/10] lg:aspect-[16/9] w-full" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Main Details and Sidebar Contact Card */}
@@ -216,49 +212,61 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
                 <Ruler size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
                 <span>{p.areaUtil} m² úteis</span>
               </div>
-              <div className="flex items-center gap-2.5">
-                <BedDouble size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
-                <span>{p.dorms} dorms ({p.suites} suítes)</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Bath size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
-                <span>{p.banheiros} banheiros</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Car size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
-                <span>{p.vagas} vagas</span>
-              </div>
+              {p.dorms > 0 && (
+                <div className="flex items-center gap-2.5">
+                  <BedDouble size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
+                  <span>{p.dorms} dorms ({p.suites} suítes)</span>
+                </div>
+              )}
+              {temBanheiros && (
+                <div className="flex items-center gap-2.5">
+                  <Bath size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
+                  <span>{p.banheiros} banheiros</span>
+                </div>
+              )}
+              {p.vagas > 0 && (
+                <div className="flex items-center gap-2.5">
+                  <Car size={18} strokeWidth={1.5} className="text-verde flex-shrink-0" />
+                  <span>{p.vagas} vagas</span>
+                </div>
+              )}
             </div>
 
             {/* Sobre o imóvel */}
             <div className="space-y-6">
               <h2 className="text-xl font-serif text-texto-escuro font-medium">Sobre a propriedade</h2>
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-sans font-light">
-                Espetacular {p.tipo.toLowerCase()} de altíssimo padrão situado no coração do {p.bairro}, uma das áreas mais seguras, arborizadas e desejadas de São Paulo. 
-                Com uma planta inteligente e fluidamente integrada, dispõe de {p.areaUtil} m² de área privativa meticulosamente planejada.
-              </p>
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-sans font-light">
-                A área íntima é composta por {p.dorms} amplos dormitórios (sendo {p.suites} elegantes suítes equipadas com armários de altíssima qualidade). O living social possui pé-direito avantajado, propiciando excelente luminosidade natural e ventilação cruzada. Garagem privativa subterrânea com capacidade para {p.vagas} veículos grandes.
-              </p>
-              <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-sans font-light">
-                Excelente oportunidade de morar com conforto, segurança total de portaria 24 horas, em localização altamente estratégica com fácil acesso aos melhores clubes, gastronomia de ponta e centros empresariais paulistanos.
-              </p>
+              {descricao ? (
+                descricao.split("\n").filter(Boolean).map((linha, i) => (
+                  <p key={i} className="text-gray-600 leading-relaxed text-sm sm:text-base font-sans font-light">
+                    {linha}
+                  </p>
+                ))
+              ) : (
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base font-sans font-light">
+                  {p.tipo} com {p.areaUtil} m² de área útil no bairro {p.bairro}, em São Paulo
+                  {p.dorms > 0 ? `, com ${p.dorms} dormitórios, sendo ${p.suites} suítes` : ""}
+                  {p.vagas > 0 ? `, e ${p.vagas} vagas` : ""}.
+                  Entre em contato para receber a descrição completa e agendar uma visita.
+                </p>
+              )}
             </div>
 
             {/* Características Adicionais */}
-            <div className="mt-10">
-              <h2 className="text-xl font-serif text-texto-escuro font-medium mb-4">Características do Imóvel</h2>
-              <div className="flex gap-2 flex-wrap">
-                {p.caracteristicas.map((c) => (
-                  <span
-                    key={c}
-                    className="px-4 py-2 text-xs border font-sans font-light rounded-[2px] text-verde-profundo border-verde/30 bg-white"
-                  >
-                    {c}
-                  </span>
-                ))}
+            {p.caracteristicas && p.caracteristicas.length > 0 && (
+              <div className="mt-10">
+                <h2 className="text-xl font-serif text-texto-escuro font-medium mb-4">Características do Imóvel</h2>
+                <div className="flex gap-2 flex-wrap">
+                  {p.caracteristicas.map((c) => (
+                    <span
+                      key={c}
+                      className="px-4 py-2 text-xs border font-sans font-light rounded-[2px] text-verde-profundo border-verde/30 bg-white"
+                    >
+                      {c}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Right Column: Sidebar Scheduler Widget */}
@@ -268,7 +276,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
                 Valor de venda
               </p>
               <p className="text-3xl mb-8 font-serif text-verde font-semibold">
-                {fmtPreco(p.preco)}
+                {typeof p.preco === "number" ? fmtPreco(p.preco) : "Sob consulta"}
               </p>
 
               {/* Instant Messenger Button */}
@@ -360,7 +368,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
         {/* Similares Slider / Row */}
         {similares.length > 0 && (
           <div className="mt-20 border-t border-[#1a1a1a]/10 pt-16">
-            <h2 className="text-2xl mb-8 font-serif text-texto-escuro font-medium">Imóveis semelhantes no bairro</h2>
+            <h2 className="text-2xl mb-8 font-serif text-texto-escuro font-medium">Imóveis semelhantes</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {similares.map((x) => (
                 <PropertyCard key={x.id} p={x} onOpen={onOpen} />
