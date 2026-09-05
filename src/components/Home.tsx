@@ -149,14 +149,24 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             {
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "name": "Lais Camargo Estates",
-              "url": "https://www.laiscamargoestates.com.br/"
+              "name": "Lais Camargo",
+              "url": "https://laiscamargoestates.com.br",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                  "@type": "EntryPoint",
+                  "urlTemplate": "https://laiscamargoestates.com.br/busca?q={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+              }
             },
             {
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Lais Camargo Estates",
-              "url": "https://www.laiscamargoestates.com.br/",
+              "name": "Lais Camargo",
+              "url": "https://laiscamargoestates.com.br",
+              "description": "Serviço de curadoria especializada em imóveis de alto padrão, oferecendo seleção exclusiva de apartamentos e casas em São Paulo com atendimento personalizado.",
+              "logo": "https://laiscamargoestates.com.br/logo.png",
               "sameAs": [
                 "https://www.instagram.com/laiscamargoimoveis"
               ]
@@ -248,19 +258,19 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
             "Casas",
             ["Casa", "Casa de condomínio"],
             "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80",
-            "Casa de alto padrão em condomínio fechado em São Paulo"
+            "Fachada contemporânea de casa de altíssimo padrão com projeto paisagístico em Alphaville."
           )}
           {categoria(
             "Apartamentos",
             ["Apartamento"],
             "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80",
-            "Apartamento de alto padrão em São Paulo"
+            "Sala de estar ampla com pé-direito duplo em imóvel residencial de altíssimo padrão."
           )}
           {categoria(
             "Coberturas",
             ["Cobertura"],
             "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80",
-            "Cobertura de luxo com vista em São Paulo"
+            "Espaço gourmet luxuoso com piscina de borda infinita em residência de alto luxo."
           )}
         </div>
       </section>
