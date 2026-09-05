@@ -71,6 +71,12 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
 
   const descricao = (p as any).descricao as string | undefined;
   const temBanheiros = typeof p.banheiros === "number" && p.banheiros > 0;
+  const condominio = (p as any).condominio as number | null | undefined;
+  const iptu = (p as any).iptu as number | null | undefined;
+  const valorM2 = typeof p.preco === "number" && p.areaUtil > 0
+    ? Math.round(p.preco / p.areaUtil)
+    : null;
+  const altFoto = `${p.tipo} de ${p.areaUtil} m² à venda no ${p.bairro}, São Paulo. Referência ${p.codigo}`;
 
   const zapMsg = WHATSAPP + "?text=" + encodeURIComponent(
     `Olá Lais Camargo! Tenho interesse no imóvel ${p.codigo} (${p.tipo} no bairro ${p.bairro} de ${p.areaUtil}m²). Gostaria de agendar uma visita e receber mais informações.`
@@ -90,6 +96,13 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
       "addressCountry": "BR"
     },
     "numberOfRooms": p.dorms,
+    "numberOfBedrooms": p.dorms,
+    "photo": (galeria || []).slice(0, 10),
+    "amenityFeature": (p.caracteristicas || []).map((c) => ({
+      "@type": "LocationFeatureSpecification",
+      "name": c,
+      "value": true
+    })),
     "floorSize": {
       "@type": "QuantitativeValue",
       "value": p.areaUtil,
@@ -164,7 +177,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
 
         {/* Interactive Gallery */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-6">
-          <Foto tone={p.tone} src={galeria[fotoAtiva]} className="lg:col-span-2 aspect-[16/10] rounded-sm shadow-xs">
+          <Foto tone={p.tone} src={galeria[fotoAtiva]} alt={altFoto} className="lg:col-span-2 aspect-[16/10] rounded-sm shadow-xs">
             {p.exclusivo && (
               <span
                 className="absolute top-4 left-4 text-[10px] tracking-[0.2em] uppercase px-3 py-1.5 font-medium shadow-xs"
@@ -185,7 +198,7 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
                     (fotoAtiva === i ? "ring-2 ring-verde-profundo scale-[0.98]" : "opacity-75 hover:opacity-100")
                   }
                 >
-                  <Foto tone={p.tone + i} src={g} className="aspect-[16/10] lg:aspect-[16/9] w-full" />
+                  <Foto tone={p.tone + i} src={g} alt={`${altFoto} — imagem ${i + 1}`} className="aspect-[16/10] lg:aspect-[16/9] w-full" />
                 </button>
               ))}
             </div>
@@ -250,6 +263,33 @@ export function DetailPage({ onBack, onOpen }: DetailPageProps) {
                 </p>
               )}
             </div>
+
+            {/* Detalhes financeiros */}
+            {(condominio || iptu || valorM2) && (
+              <div className="mt-10">
+                <h2 className="text-xl font-serif text-texto-escuro font-medium mb-4">Detalhes</h2>
+                <dl className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm font-sans font-light">
+                  {condominio && (
+                    <div className="border border-[#1a1a1a]/10 rounded-[2px] px-4 py-3">
+                      <dt className="text-[10px] tracking-[0.2em] uppercase text-gray-400 font-medium mb-1">Condomínio</dt>
+                      <dd className="text-texto-escuro">{fmtPreco(condominio)} por mês</dd>
+                    </div>
+                  )}
+                  {iptu && (
+                    <div className="border border-[#1a1a1a]/10 rounded-[2px] px-4 py-3">
+                      <dt className="text-[10px] tracking-[0.2em] uppercase text-gray-400 font-medium mb-1">IPTU</dt>
+                      <dd className="text-texto-escuro">{fmtPreco(iptu)} por mês</dd>
+                    </div>
+                  )}
+                  {valorM2 && (
+                    <div className="border border-[#1a1a1a]/10 rounded-[2px] px-4 py-3">
+                      <dt className="text-[10px] tracking-[0.2em] uppercase text-gray-400 font-medium mb-1">Valor do m²</dt>
+                      <dd className="text-texto-escuro">{fmtPreco(valorM2)}</dd>
+                    </div>
+                  )}
+                </dl>
+              </div>
+            )}
 
             {/* Características Adicionais */}
             {p.caracteristicas && p.caracteristicas.length > 0 && (
