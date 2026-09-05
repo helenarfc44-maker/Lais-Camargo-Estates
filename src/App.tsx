@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route, useNavigate, useLocation, Navigate } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Home } from "./components/Home";
 import { SearchPage } from "./components/SearchPage";
@@ -25,13 +26,15 @@ const FILTROS_INICIAIS: Filtros = {
   lancamentos: false,
 };
 
-export default function App() {
-  const [page, setPage] = useState("home");
+function AppContent() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [filtros, setFiltros] = useState<Filtros>(FILTROS_INICIAIS);
-  const [selecionado, setSelecionado] = useState<Imovel | null>(null);
 
-  const onNav = (p: string, anchor?: string) => {
-    setPage(p);
+  const onNav = (path: string, anchor?: string) => {
+    if (location.pathname !== path) {
+      navigate(path);
+    }
     
     // Smooth scroll handling for anchors (e.g. #sobre, #contato)
     setTimeout(() => {
@@ -40,53 +43,51 @@ export default function App() {
         if (el) {
           el.scrollIntoView({ behavior: "smooth" });
         }
-      } else {
+      } else if (location.pathname !== path) {
         window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
       }
     }, 60);
   };
 
-  const onOpen = (p: Imovel) => {
-    setSelecionado(p);
-    onNav("detail");
-  };
-
   const goSearchTipo = (tipos: string[]) => {
     setFiltros({ ...FILTROS_INICIAIS, tipos });
-    onNav("search");
+    onNav("/busca");
   };
 
-  // Reset page title dynamically based on location
-  useEffect(() => {
-    if (page === "home") {
-      document.title = "Lais Camargo | Imóveis de Luxo em São Paulo";
-    } else if (page === "search") {
-      document.title = "Buscar Imóveis | Lais Camargo";
-    } else if (page === "detail" && selecionado) {
-      document.title = `${selecionado.tipo} no ${selecionado.bairro} | Lais Camargo`;
-    }
-  }, [page, selecionado]);
+  const onOpen = (p: Imovel) => {
+    const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const slug = slugify(p.tipo + " com " + p.areaUtil + "-0 m2 a venda no bairro " + p.bairro) + "-" + p.codigo;
+    onNav(`/imovel/${slug}`);
+  };
+
+  // Determine current page for Header highlight
+  const currentPage = location.pathname === "/" ? "home" : location.pathname.startsWith("/busca") ? "search" : "detail";
 
   return (
     <div className="bg-white min-h-screen text-texto-escuro font-sans antialiased selection:bg-verde/30">
       {/* Universal Sticky Header */}
-      <Header onNav={onNav} currentPage={page} />
+      <Header onNav={onNav} currentPage={currentPage} />
 
       {/* Main Pages */}
       <main className="min-h-[calc(100vh-112px)]">
-        {page === "home" && (
-          <Home onNav={onNav} goSearchTipo={goSearchTipo} onOpen={onOpen} />
-        )}
-        {page === "search" && (
-          <SearchPage filtros={filtros} setFiltros={setFiltros} onOpen={onOpen} />
-        )}
-        {page === "detail" && selecionado && (
-          <DetailPage p={selecionado} onBack={() => onNav("search")} onOpen={onOpen} />
-        )}
+        <Routes>
+          <Route path="/" element={<Home onNav={onNav} goSearchTipo={goSearchTipo} onOpen={onOpen} />} />
+          <Route path="/busca" element={<SearchPage filtros={filtros} setFiltros={setFiltros} onOpen={onOpen} />} />
+          <Route path="/imovel/:slug" element={<DetailPage onBack={() => onNav("/busca")} onOpen={onOpen} />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
 
       {/* Universal Footer */}
       <Footer onNav={onNav} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
   );
 }

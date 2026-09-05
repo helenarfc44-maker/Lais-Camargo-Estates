@@ -156,7 +156,10 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
               "@context": "https://schema.org",
               "@type": "Organization",
               "name": "Lais Camargo Estates",
-              "url": "https://www.laiscamargoestates.com.br/"
+              "url": "https://www.laiscamargoestates.com.br/",
+              "sameAs": [
+                "https://www.instagram.com/laiscamargoimoveis"
+              ]
             }
           ])
         }}
@@ -300,8 +303,9 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
               className="aspect-[4/5] w-full rounded-sm shadow-lg object-cover"
             >
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 text-white text-xs tracking-[0.3em] uppercase font-sans font-medium">
-                Lais Camargo
+              <div className="absolute bottom-6 left-6 text-white tracking-[0.3em] uppercase font-sans font-medium flex flex-col gap-1">
+                <span className="text-xs">Lais Camargo</span>
+                <span className="text-[10px] opacity-80">CRECI: 76056</span>
               </div>
             </Foto>
           </div>

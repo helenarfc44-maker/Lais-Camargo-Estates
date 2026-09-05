@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { BedDouble, Bath, Car, Ruler, MessageCircle, Mail, ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 import { Imovel } from "../types";
 import { PropertyCard } from "./PropertyCard";
@@ -9,40 +10,103 @@ const WHATSAPP = "https://wa.me/5511991851032";
 const EMAIL = "lais@c5.com.br";
 
 interface DetailPageProps {
-  p: Imovel;
   onBack: () => void;
   onOpen: (p: Imovel) => void;
 }
 
 const fmtPreco = (v: number) => "R$ " + new Intl.NumberFormat("pt-BR").format(v);
+const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
-export function DetailPage({ p, onBack, onOpen }: DetailPageProps) {
+export function DetailPage({ onBack, onOpen }: DetailPageProps) {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const IMOVEIS: Imovel[] = data.imoveis;
+  
+  const p = useMemo(() => {
+    return IMOVEIS.find(x => {
+      const xSlug = slugify(x.tipo + " com " + x.areaUtil + "-0 m2 a venda no bairro " + x.bairro) + "-" + x.codigo;
+      return xSlug === slug;
+    });
+  }, [slug, IMOVEIS]);
+
   const [fotoAtiva, setFotoAtiva] = useState(0);
+
+  // Use effect to set title
+  useEffect(() => {
+    if (p) {
+      document.title = `${p.tipo} no ${p.bairro} | Lais Camargo`;
+    }
+  }, [p]);
+
+  // Form State
+  const [form, setForm] = useState({ nome: "", email: "", tel: "", msg: "" });
+  
+  useEffect(() => {
+    if (p) {
+      setForm(prev => ({ ...prev, msg: `Gostaria de solicitar informações e agendar visita para o imóvel ${p.codigo} (${p.tipo} - ${p.bairro}).` }));
+    }
+  }, [p]);
+
+  const [submitting, setSubmitting] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Generate sub-photos dynamically from Unsplash ID
   const galeria = useMemo(() => {
+    if (!p) return [];
     const baseUrl = p.img.split("?")[0];
     return [
       p.img,
       `${baseUrl}?auto=format&fit=crop&w=900&q=80&sat=-15`,
       `${baseUrl}?auto=format&fit=crop&w=900&q=80&brightness=90`
     ];
-  }, [p.img]);
+  }, [p]);
 
   const similares = useMemo(() => {
+    if (!p) return [];
     return IMOVEIS.filter((x) => x.tipo === p.tipo && x.id !== p.id).slice(0, 3);
-  }, [p.tipo, p.id]);
+  }, [p, IMOVEIS]);
+
+  if (!p) {
+    return (
+      <div className="pt-28 min-h-screen bg-white flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-serif text-texto-escuro mb-4">Imóvel não encontrado</h2>
+        <button onClick={onBack} className="btn-outline-verde px-6 py-2 text-xs uppercase font-medium">Voltar</button>
+      </div>
+    );
+  }
 
   const zapMsg = WHATSAPP + "?text=" + encodeURIComponent(
     `Olá Lais Camargo! Tenho interesse no imóvel ${p.codigo} (${p.tipo} no bairro ${p.bairro} de ${p.areaUtil}m²). Gostaria de agendar uma visita e receber mais informações.`
   );
 
-  // Form State
-  const [form, setForm] = useState({ nome: "", email: "", tel: "", msg: `Gostaria de solicitar informações e agendar visita para o imóvel ${p.codigo} (${p.tipo} - ${p.bairro}).` });
-  const [submitting, setSubmitting] = useState(false);
-  const [sent, setSent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const schemaOrg = {
+    "@context": "https://schema.org",
+    "@type": p.tipo === "Apartamento" || p.tipo === "Cobertura" ? "Apartment" : "SingleFamilyResidence",
+    "name": `${p.tipo} no ${p.bairro} - Lais Camargo Estates`,
+    "description": `Excelente ${p.tipo.toLowerCase()} com ${p.areaUtil}m², ${p.dorms} dormitórios (${p.suites} suítes) e ${p.vagas} vagas à venda no bairro ${p.bairro}, São Paulo.`,
+    "url": `https://www.laiscamargoestates.com.br/imovel/${slug}`,
+    "image": p.img,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "São Paulo",
+      "addressRegion": "SP",
+      "addressCountry": "BR"
+    },
+    "numberOfRooms": p.dorms,
+    "numberOfBathroomsTotal": p.banheiros,
+    "floorSize": {
+      "@type": "QuantitativeValue",
+      "value": p.areaUtil,
+      "unitCode": "MTK"
+    },
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "BRL",
+      "price": p.preco,
+      "availability": "https://schema.org/InStock"
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -89,6 +153,7 @@ export function DetailPage({ p, onBack, onOpen }: DetailPageProps) {
 
   return (
     <div className="pt-28 min-h-screen bg-white">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
       <div className="max-w-7xl mx-auto px-5 py-10">
         {/* Back navigation & breadcrumb */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
