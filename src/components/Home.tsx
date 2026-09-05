@@ -91,60 +91,74 @@ export function Home({ onNav, goSearchTipo, onOpen }: HomeProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "RealEstateAgent",
-            "name": "Lais Camargo Estates",
-            "url": "https://www.laiscamargoestates.com.br/",
-            "priceRange": "$$$$",
-            "areaServed": [
-              {
-                "@type": "AdministrativeArea",
-                "name": "Itaim Bibi",
-                "sameAs": "https://pt.wikipedia.org/wiki/Itaim_Bibi"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Jardins",
-                "sameAs": "https://pt.wikipedia.org/wiki/Jardins_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Vila Nova Conceição",
-                "sameAs": "https://pt.wikipedia.org/wiki/Vila_Nova_Concei%C3%A7%C3%A3o"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Jardim América",
-                "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Am%C3%A9rica_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Pinheiros",
-                "sameAs": "https://pt.wikipedia.org/wiki/Pinheiros_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Cidade Jardim",
-                "sameAs": "https://pt.wikipedia.org/wiki/Cidade_Jardim_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Jardim Europa",
-                "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Europa_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Jardim Paulistano",
-                "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Paulistano_(bairro_de_S%C3%A3o_Paulo)"
-              },
-              {
-                "@type": "AdministrativeArea",
-                "name": "Morumbi",
-                "sameAs": "https://pt.wikipedia.org/wiki/Morumbi_(bairro_de_S%C3%A3o_Paulo)"
-              }
-            ]
-          })
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "RealEstateAgent",
+              "name": "Lais Camargo Estates",
+              "url": "https://www.laiscamargoestates.com.br/",
+              "priceRange": "$$$$",
+              "areaServed": [
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Itaim Bibi",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Itaim_Bibi"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Jardins",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Jardins_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Vila Nova Conceição",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Vila_Nova_Concei%C3%A7%C3%A3o"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Jardim América",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Am%C3%A9rica_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Pinheiros",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Pinheiros_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Cidade Jardim",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Cidade_Jardim_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Jardim Europa",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Europa_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Jardim Paulistano",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Jardim_Paulistano_(bairro_de_S%C3%A3o_Paulo)"
+                },
+                {
+                  "@type": "AdministrativeArea",
+                  "name": "Morumbi",
+                  "sameAs": "https://pt.wikipedia.org/wiki/Morumbi_(bairro_de_S%C3%A3o_Paulo)"
+                }
+              ]
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "name": "Lais Camargo Estates",
+              "url": "https://www.laiscamargoestates.com.br/"
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              "name": "Lais Camargo Estates",
+              "url": "https://www.laiscamargoestates.com.br/"
+            }
+          ])
         }}
       />
       {/* HERO SECTION */}
